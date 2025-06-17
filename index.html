@@ -1,101 +1,264 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aplikasi Perhitungan Cat Jotun</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Perhitungan Luasan & Cat Kapal</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f9f9f9; }
-    header { background: #c62828; color: white; padding: 20px; text-align: center; }
-    main { padding: 20px; max-width: 600px; margin: auto; background: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    label, select, input, button { display: block; width: 100%; margin: 10px 0; }
-    button { padding: 10px; background: #c62828; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #b71c1c; }
-    .result, .info, .produk { margin-top: 20px; }
-    .produk-item { border: 1px solid #ddd; padding: 10px; border-radius: 5px; margin-bottom: 10px; display: flex; gap: 15px; align-items: center; }
-    .produk-item img { width: 80px; height: auto; border-radius: 5px; }
-    .produk-item h4 { margin: 5px 0; }
-    @media (max-width: 600px) { body { padding: 10px; } .produk-item { flex-direction: column; align-items: flex-start; } }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    header {
+      background: #004d40;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    main {
+      background: white;
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label,
+    input {
+      display: block;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    input[type="number"] {
+      padding: 5px;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px;
+      background: #004d40;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00332c;
+    }
+
+    .result,
+    .produk {
+      margin-top: 30px;
+    }
+
+    .produk-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 15px;
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .produk-item img {
+      width: 80px;
+      border-radius: 5px;
+    }
+
+    img.ilustrasi {
+      width: 100%;
+      max-width: 100%;
+      margin: 20px 0;
+      border-radius: 5px;
+    }
+
+    @media(max-width: 600px) {
+      .produk-item {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
   </style>
 </head>
+
 <body>
   <header>
-    <h1>Aplikasi Perhitungan Cat Jotun</h1>
+    <h1>Perhitungan Luasan & Kebutuhan Cat Kapal</h1>
   </header>
+
   <main>
-    <h2>Perhitungan Cat</h2>
-    <label for="panjang">Panjang Ruangan (meter)</label>
-    <input type="number" id="panjang">
-    <label for="lebar">Lebar Ruangan (meter)</label>
-    <input type="number" id="lebar">
-    <label for="tinggi">Tinggi Ruangan (meter)</label>
-    <input type="number" id="tinggi">
-    <label for="jenis">Jenis Cat Jotun</label>
-    <select id="jenis">
-      <option value="Majestic Perfect Sense" data-daya="7.05">Majestic Perfect Sense</option>
-      <option value="Essence Easy Primer" data-daya="10.2">Essence Easy Primer</option>
-      <option value="Majestic True Beauty Sheen" data-daya="10.5">Majestic True Beauty Sheen</option>
-      <option value="Majestic True Beauty Matt" data-daya="10.5">Majestic True Beauty Matt</option>
-      <option value="Gardex Primer" data-daya="8.0">Gardex Primer</option>
-      <option value="Essence Easy Wipe" data-daya="9.0">Essence Easy Wipe</option>
-    </select>
-    <button onclick="hitungKebutuhan()">Hitung</button>
-    <div class="result" id="result"></div>
+    <h2>Ilustrasi Struktur Kapal</h2>
+    <img class="ilustrasi" src="kapal-ilustrasi.png" alt="Ilustrasi Kapal">
+
+    <h2>Input Parameter Kapal</h2>
+    <label for="d">Sarat Air (d) - meter</label>
+    <input type="number" id="d" value="4">
+    <label for="B">Lebar Kapal (B) - meter</label>
+    <input type="number" id="B" value="11">
+    <label for="Lpp">Panjang antara garis tegak (Lpp) - meter</label>
+    <input type="number" id="Lpp" value="50">
+    <label for="P">Coefficient Block (P)</label>
+    <input type="number" id="P" value="0.69" step="0.01">
+    <label for="h">Tinggi Bottop (h) - meter</label>
+    <input type="number" id="h" value="1.5">
+    <label for="H">Tinggi Top Side (H) - meter</label>
+    <input type="number" id="H" value="2">
+    <label for="Loa">Panjang Utama Kapal (Loa) - meter</label>
+    <input type="number" id="Loa" value="70">
+    <button onclick="hitung()">Hitung Luasan</button>
+
+    <div class="result" id="hasil">
+      <h3>Hasil Perhitungan Luasan</h3>
+      <p><strong>Luasan Bottom:</strong> -</p>
+      <p><strong>Luasan Bottop:</strong> -</p>
+      <p><strong>Luasan Top Side:</strong> -</p>
+      <hr>
+      <p><strong>Total Luasan:</strong> -</p>
+    </div>
+
+    <div class="result" id="kebutuhan-cat" style="display:none;">
+      <h3>Perhitungan Kebutuhan Cat</h3>
+      <label for="jenisCat">Pilih Produk Cat:</label>
+      <select id="jenisCat" onchange="hitungKebutuhanCat()">
+        <option value="" disabled selected>-- Pilih Cat --</option>
+        <option value="7.05">Majestic Perfect Sense (7.05 m²/liter)</option>
+        <option value="10.2">Essence Easy Primer (10.2 m²/liter)</option>
+        <option value="10.5">Majestic True Beauty Sheen (10.5 m²/liter)</option>
+        <option value="10.5">Majestic True Beauty Matt (10.5 m²/liter)</option>
+        <option value="8.0">Gardex Primer (8.0 m²/liter)</option>
+        <option value="9.0">Essence Easy Wipe (9.0 m²/liter)</option>
+      </select>
+      <div id="hasilCat" style="margin-top:10px;"></div>
+    </div>
+
 
     <div class="produk">
-      <h2>Info Produk Cat Jotun</h2>
+      <h2>Gambar & Info Produk Cat Jotun</h2>
+
       <div class="produk-item">
         <img src="https://thumbs4.imagebam.com/ff/5d/47/ME12X3F7_t.jpg" alt="Majestic Perfect Sense">
-        <div><h4>Majestic Perfect Sense</h4><p>Daya sebar 7.05 m²/liter. Teknologi udara bersih dan hasil akhir halus.</p></div>
+        <div>
+          <h4>Majestic Perfect Sense</h4>
+          <p>Daya sebar 7.05 m²/liter. Teknologi udara bersih dan hasil akhir halus.</p>
+        </div>
       </div>
       <div class="produk-item">
         <img src="https://thumbs4.imagebam.com/4f/9b/1c/ME12X3F6_t.jpg" alt="Essence Easy Primer">
-        <div><h4>Essence Easy Primer</h4><p>Daya sebar 10.2 m²/liter. Cat dasar tahan alkali dan merekat kuat.</p></div>
+        <div>
+          <h4>Essence Easy Primer</h4>
+          <p>Daya sebar 10.2 m²/liter. Cat dasar tahan alkali dan merekat kuat.</p>
+        </div>
       </div>
       <div class="produk-item">
         <img src="https://thumbs4.imagebam.com/1b/e3/01/ME12X3F5_t.jpg" alt="Majestic True Beauty Sheen">
-        <div><h4>Majestic True Beauty Sheen</h4><p>Daya sebar 10.5 m²/liter. Anti bakteri, hasil akhir mengkilap, mudah dibersihkan.</p></div>
+        <div>
+          <h4>Majestic True Beauty Sheen</h4>
+          <p>Daya sebar 10.5 m²/liter. Anti bakteri, hasil akhir mengkilap, mudah dibersihkan.</p>
+        </div>
       </div>
       <div class="produk-item">
         <img src="https://thumbs4.imagebam.com/48/fc/5a/ME12X3F3_t.jpg" alt="Majestic True Beauty Matt">
-        <div><h4>Majestic True Beauty Matt</h4><p>Daya sebar 10.5 m²/liter. Hasil akhir matte, anti bakteri dan jamur.</p></div>
+        <div>
+          <h4>Majestic True Beauty Matt</h4>
+          <p>Daya sebar 10.5 m²/liter. Hasil akhir matte, anti bakteri dan jamur.</p>
+        </div>
       </div>
       <div class="produk-item">
         <img src="https://thumbs4.imagebam.com/59/f4/61/ME12X3F9_t.jpg" alt="Gardex Primer">
-        <div><h4>Gardex Primer</h4><p>Daya sebar 8.0 m²/liter. Untuk kayu/besi, anti karat dan jamur.</p></div>
+        <div>
+          <h4>Gardex Primer</h4>
+          <p>Daya sebar 8.0 m²/liter. Untuk kayu/besi, anti karat dan jamur.</p>
+        </div>
       </div>
       <div class="produk-item">
         <img src="https://thumbs4.imagebam.com/c9/01/2d/ME12X3F8_t.jpg" alt="Essence Easy Wipe">
-        <div><h4>Essence Easy Wipe</h4><p>Daya sebar 9.0 m²/liter. Mudah dibersihkan, rendah VOC.</p></div>
+        <div>
+          <h4>Essence Easy Wipe</h4>
+          <p>Daya sebar 9.0 m²/liter. Mudah dibersihkan, rendah VOC.</p>
+        </div>
       </div>
     </div>
   </main>
+
   <script>
-    function hitungKebutuhan() {
-      const panjang = parseFloat(document.getElementById('panjang').value);
-      const lebar = parseFloat(document.getElementById('lebar').value);
-      const tinggi = parseFloat(document.getElementById('tinggi').value);
-      const jenisSelect = document.getElementById('jenis');
-      const dayaSebar = parseFloat(jenisSelect.options[jenisSelect.selectedIndex].getAttribute('data-daya'));
-      const namaCat = jenisSelect.value;
+    function hitung() {
+      const d = parseFloat(document.getElementById("d").value);
+      const B = parseFloat(document.getElementById("B").value);
+      const Lpp = parseFloat(document.getElementById("Lpp").value);
+      const P = parseFloat(document.getElementById("P").value);
+      const h = parseFloat(document.getElementById("h").value);
+      const H = parseFloat(document.getElementById("H").value);
+      const Loa = parseFloat(document.getElementById("Loa").value);
 
-      if (isNaN(panjang) || isNaN(lebar) || isNaN(tinggi)) {
-        alert("Isi semua data ruangan dengan benar");
-        return;
-      }
+      const luasanBottom = ((2 * d) + B) * Lpp * P;
+      const luasanBottop = 2 * h * (Lpp + 0.5 * B);
+      const luasanTopside = 2 * H * (Loa + 0.5 * B);
+      const total = luasanBottom + luasanBottop + luasanTopside;
 
-      const luas = 2 * ((panjang + lebar) * tinggi);
-      const kebutuhan = (luas * 2) / dayaSebar; // 2 lapisan
-      const jumlahKaleng = Math.ceil(kebutuhan / 5);
-
-      document.getElementById("result").innerHTML = `
-        <h3>Hasil Perhitungan</h3>
-        <p><strong>Jenis Cat:</strong> ${namaCat}</p>
-        <p><strong>Luas Permukaan:</strong> ${luas.toFixed(2)} m²</p>
-        <p><strong>Kebutuhan Cat:</strong> ${kebutuhan.toFixed(2)} liter</p>
-        <p><strong>Jumlah Kaleng (5L):</strong> ${jumlahKaleng} kaleng</p>
+      document.getElementById("hasil").innerHTML = `
+        <h3>Hasil Perhitungan Luasan</h3>
+        <p><strong>Luasan Bottom:</strong> ${luasanBottom.toFixed(2)} m²</p>
+        <p><strong>Luasan Bottop:</strong> ${luasanBottop.toFixed(2)} m²</p>
+        <p><strong>Luasan Top Side:</strong> ${luasanTopside.toFixed(2)} m²</p>
+        <hr>
+        <p><strong>Total Luasan:</strong> ${total.toFixed(2)} m²</p>
       `;
     }
+
+    let totalGlobal = 0;
+
+    function hitung() {
+      const d = parseFloat(document.getElementById("d").value);
+      const B = parseFloat(document.getElementById("B").value);
+      const Lpp = parseFloat(document.getElementById("Lpp").value);
+      const P = parseFloat(document.getElementById("P").value);
+      const h = parseFloat(document.getElementById("h").value);
+      const H = parseFloat(document.getElementById("H").value);
+      const Loa = parseFloat(document.getElementById("Loa").value);
+
+      const luasanBottom = ((2 * d) + B) * Lpp * P;
+      const luasanBottop = 2 * h * (Lpp + 0.5 * B);
+      const luasanTopside = 2 * H * (Loa + 0.5 * B);
+      const total = luasanBottom + luasanBottop + luasanTopside;
+      totalGlobal = total;
+
+      document.getElementById("hasil").innerHTML = `
+    <h3>Hasil Perhitungan Luasan</h3>
+    <p><strong>Luasan Bottom:</strong> ${luasanBottom.toFixed(2)} m²</p>
+    <p><strong>Luasan Bottop:</strong> ${luasanBottop.toFixed(2)} m²</p>
+    <p><strong>Luasan Top Side:</strong> ${luasanTopside.toFixed(2)} m²</p>
+    <hr>
+    <p><strong>Total Luasan:</strong> ${total.toFixed(2)} m²</p>
+  `;
+
+      document.getElementById("kebutuhan-cat").style.display = 'block';
+      document.getElementById("hasilCat").innerHTML = "";
+    }
+
+    function hitungKebutuhanCat() {
+      const sebar = parseFloat(document.getElementById("jenisCat").value);
+      if (!totalGlobal || isNaN(sebar)) return;
+
+      const liter = totalGlobal / sebar;
+      const kaleng = Math.ceil(liter / 5); // misal 1 kaleng = 5 liter
+
+      document.getElementById("hasilCat").innerHTML = `
+    <p><strong>Kebutuhan Cat:</strong></p>
+    <p>- Total: ${liter.toFixed(2)} liter</p>
+    <p>- Jumlah Kaleng (5L): ${kaleng} kaleng</p>
+  `;
+    }
+
   </script>
 </body>
+
 </html>
