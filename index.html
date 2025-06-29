@@ -1,3 +1,4 @@
+<!-- FILE: index.html -->
 <!DOCTYPE html>
 <html lang="id">
 
@@ -130,90 +131,22 @@
       <label for="jenisCat">Pilih Produk Cat:</label>
       <select id="jenisCat" onchange="hitungKebutuhanCat()">
         <option value="" disabled selected>-- Pilih Cat --</option>
-        <option value="7.05">Majestic Perfect Sense (7.05 m²/liter)</option>
-        <option value="10.2">Essence Easy Primer (10.2 m²/liter)</option>
-        <option value="10.5">Majestic True Beauty Sheen (10.5 m²/liter)</option>
-        <option value="10.5">Majestic True Beauty Matt (10.5 m²/liter)</option>
-        <option value="8.0">Gardex Primer (8.0 m²/liter)</option>
-        <option value="9.0">Essence Easy Wipe (9.0 m²/liter)</option>
+        <option value="4.97">Jotaguard 630 (4.97 m²/liter)</option>
+        <option value="5.79">Safeguard Universal ES (5.79 m²/liter)</option>
+        <option value="7.14">Penguard Primer (7.14 m²/liter)</option>
+        <option value="3.85">AF Max Guard (3.85 m²/liter)</option>
+        <option value="3.53">Seaforce Shield (3.53 m²/liter)</option>
+        <option value="3.30">Seaforce Active (3.30 m²/liter)</option>
+        <option value="7.53">Alkyd High Gloss (7.53 m²/liter)</option>
+        <option value="8.40">Pilot II (8.40 m²/liter)</option>
+        <option value="5.60">Jotamastic 80 (5.60 m²/liter)</option>
+        <option value="6.10">Jotafix PU Topcoat (6.10 m²/liter)</option>
       </select>
       <div id="hasilCat" style="margin-top:10px;"></div>
-    </div>
-
-
-    <div class="produk">
-      <h2>Gambar & Info Produk Cat Jotun</h2>
-
-      <div class="produk-item">
-        <img src="https://thumbs4.imagebam.com/ff/5d/47/ME12X3F7_t.jpg" alt="Majestic Perfect Sense">
-        <div>
-          <h4>Majestic Perfect Sense</h4>
-          <p>Daya sebar 7.05 m²/liter. Teknologi udara bersih dan hasil akhir halus.</p>
-        </div>
-      </div>
-      <div class="produk-item">
-        <img src="https://thumbs4.imagebam.com/4f/9b/1c/ME12X3F6_t.jpg" alt="Essence Easy Primer">
-        <div>
-          <h4>Essence Easy Primer</h4>
-          <p>Daya sebar 10.2 m²/liter. Cat dasar tahan alkali dan merekat kuat.</p>
-        </div>
-      </div>
-      <div class="produk-item">
-        <img src="https://thumbs4.imagebam.com/1b/e3/01/ME12X3F5_t.jpg" alt="Majestic True Beauty Sheen">
-        <div>
-          <h4>Majestic True Beauty Sheen</h4>
-          <p>Daya sebar 10.5 m²/liter. Anti bakteri, hasil akhir mengkilap, mudah dibersihkan.</p>
-        </div>
-      </div>
-      <div class="produk-item">
-        <img src="https://thumbs4.imagebam.com/48/fc/5a/ME12X3F3_t.jpg" alt="Majestic True Beauty Matt">
-        <div>
-          <h4>Majestic True Beauty Matt</h4>
-          <p>Daya sebar 10.5 m²/liter. Hasil akhir matte, anti bakteri dan jamur.</p>
-        </div>
-      </div>
-      <div class="produk-item">
-        <img src="https://thumbs4.imagebam.com/59/f4/61/ME12X3F9_t.jpg" alt="Gardex Primer">
-        <div>
-          <h4>Gardex Primer</h4>
-          <p>Daya sebar 8.0 m²/liter. Untuk kayu/besi, anti karat dan jamur.</p>
-        </div>
-      </div>
-      <div class="produk-item">
-        <img src="https://thumbs4.imagebam.com/c9/01/2d/ME12X3F8_t.jpg" alt="Essence Easy Wipe">
-        <div>
-          <h4>Essence Easy Wipe</h4>
-          <p>Daya sebar 9.0 m²/liter. Mudah dibersihkan, rendah VOC.</p>
-        </div>
-      </div>
     </div>
   </main>
 
   <script>
-    function hitung() {
-      const d = parseFloat(document.getElementById("d").value);
-      const B = parseFloat(document.getElementById("B").value);
-      const Lpp = parseFloat(document.getElementById("Lpp").value);
-      const P = parseFloat(document.getElementById("P").value);
-      const h = parseFloat(document.getElementById("h").value);
-      const H = parseFloat(document.getElementById("H").value);
-      const Loa = parseFloat(document.getElementById("Loa").value);
-
-      const luasanBottom = ((2 * d) + B) * Lpp * P;
-      const luasanBottop = 2 * h * (Lpp + 0.5 * B);
-      const luasanTopside = 2 * H * (Loa + 0.5 * B);
-      const total = luasanBottom + luasanBottop + luasanTopside;
-
-      document.getElementById("hasil").innerHTML = `
-        <h3>Hasil Perhitungan Luasan</h3>
-        <p><strong>Luasan Bottom:</strong> ${luasanBottom.toFixed(2)} m²</p>
-        <p><strong>Luasan Bottop:</strong> ${luasanBottop.toFixed(2)} m²</p>
-        <p><strong>Luasan Top Side:</strong> ${luasanTopside.toFixed(2)} m²</p>
-        <hr>
-        <p><strong>Total Luasan:</strong> ${total.toFixed(2)} m²</p>
-      `;
-    }
-
     let totalGlobal = 0;
 
     function hitung() {
@@ -232,13 +165,13 @@
       totalGlobal = total;
 
       document.getElementById("hasil").innerHTML = `
-    <h3>Hasil Perhitungan Luasan</h3>
-    <p><strong>Luasan Bottom:</strong> ${luasanBottom.toFixed(2)} m²</p>
-    <p><strong>Luasan Bottop:</strong> ${luasanBottop.toFixed(2)} m²</p>
-    <p><strong>Luasan Top Side:</strong> ${luasanTopside.toFixed(2)} m²</p>
-    <hr>
-    <p><strong>Total Luasan:</strong> ${total.toFixed(2)} m²</p>
-  `;
+        <h3>Hasil Perhitungan Luasan</h3>
+        <p><strong>Luasan Bottom:</strong> ${luasanBottom.toFixed(2)} m²</p>
+        <p><strong>Luasan Bottop:</strong> ${luasanBottop.toFixed(2)} m²</p>
+        <p><strong>Luasan Top Side:</strong> ${luasanTopside.toFixed(2)} m²</p>
+        <hr>
+        <p><strong>Total Luasan:</strong> ${total.toFixed(2)} m²</p>
+      `;
 
       document.getElementById("kebutuhan-cat").style.display = 'block';
       document.getElementById("hasilCat").innerHTML = "";
@@ -252,12 +185,11 @@
       const kaleng = Math.ceil(liter / 5); // misal 1 kaleng = 5 liter
 
       document.getElementById("hasilCat").innerHTML = `
-    <p><strong>Kebutuhan Cat:</strong></p>
-    <p>- Total: ${liter.toFixed(2)} liter</p>
-    <p>- Jumlah Kaleng (5L): ${kaleng} kaleng</p>
-  `;
+        <p><strong>Kebutuhan Cat:</strong></p>
+        <p>- Total: ${liter.toFixed(2)} liter</p>
+        <p>- Jumlah Kaleng (5L): ${kaleng} kaleng</p>
+      `;
     }
-
   </script>
 </body>
 
