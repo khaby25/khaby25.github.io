@@ -31,13 +31,15 @@
     }
 
     label,
-    input {
+    input,
+    select {
       display: block;
       width: 100%;
       margin-top: 10px;
     }
 
-    input[type="number"] {
+    input[type="number"],
+    select {
       padding: 5px;
     }
 
@@ -60,26 +62,16 @@
       margin-top: 30px;
     }
 
-    .produk-item {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 15px;
-      border: 1px solid #ddd;
-      padding: 10px;
-      border-radius: 5px;
-    }
-
-    .produk-item img {
+    #previewWarna {
       width: 80px;
-      border-radius: 5px;
+      height: 40px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
     }
 
-    img.ilustrasi {
-      width: 100%;
-      max-width: 100%;
-      margin: 20px 0;
-      border-radius: 5px;
+    .warna-label {
+      margin-top: 5px;
+      font-weight: bold;
     }
 
     @media(max-width: 600px) {
@@ -87,6 +79,13 @@
         flex-direction: column;
         align-items: flex-start;
       }
+    }
+
+    img.ilustrasi {
+      width: 100%;
+      max-width: 100%;
+      margin: 20px 0;
+      border-radius: 5px;
     }
   </style>
 </head>
@@ -99,7 +98,6 @@
   <main>
     <h2>Ilustrasi Struktur Kapal</h2>
     <img class="ilustrasi" src="Cuplikan layar 2025-06-17 152811.png" alt="Ilustrasi Kapal">
-
     <h2>Input Parameter Kapal</h2>
     <label for="d">Sarat Air (d) - meter</label>
     <input type="number" id="d" value="4">
@@ -117,32 +115,41 @@
     <input type="number" id="Loa" value="70">
     <button onclick="hitung()">Hitung Luasan</button>
 
-    <div class="result" id="hasil">
-      <h3>Hasil Perhitungan Luasan</h3>
-      <p><strong>Luasan Bottom:</strong> -</p>
-      <p><strong>Luasan Bottop:</strong> -</p>
-      <p><strong>Luasan Top Side:</strong> -</p>
-      <hr>
-      <p><strong>Total Luasan:</strong> -</p>
-    </div>
+    <div class="result" id="hasil"></div>
 
     <div class="result" id="kebutuhan-cat" style="display:none;">
       <h3>Perhitungan Kebutuhan Cat</h3>
+
       <label for="jenisCat">Pilih Produk Cat:</label>
-      <select id="jenisCat" onchange="hitungKebutuhanCat()">
+      <select id="jenisCat">
         <option value="" disabled selected>-- Pilih Cat --</option>
-        <option value="4.97">Jotaguard 630 (4.97 m²/liter)</option>
-        <option value="5.79">Safeguard Universal ES (5.79 m²/liter)</option>
-        <option value="7.14">Penguard Primer (7.14 m²/liter)</option>
-        <option value="3.85">AF Max Guard (3.85 m²/liter)</option>
-        <option value="3.53">Seaforce Shield (3.53 m²/liter)</option>
-        <option value="3.30">Seaforce Active (3.30 m²/liter)</option>
-        <option value="7.53">Alkyd High Gloss (7.53 m²/liter)</option>
-        <option value="8.40">Pilot II (8.40 m²/liter)</option>
-        <option value="5.60">Jotamastic 80 (5.60 m²/liter)</option>
-        <option value="6.10">Jotafix PU Topcoat (6.10 m²/liter)</option>
+        <option value="4.97" data-nama="Jotaguard 630">Jotaguard 630 (4.97 m²/liter)</option>
+        <option value="5.79" data-nama="Safeguard Universal ES">Safeguard Universal ES (5.79 m²/liter)</option>
+        <option value="7.14" data-nama="Penguard Primer">Penguard Primer (7.14 m²/liter)</option>
+        <option value="3.85" data-nama="AF Max Guard">AF Max Guard (3.85 m²/liter)</option>
+        <option value="3.53" data-nama="Seaforce Shield">Seaforce Shield (3.53 m²/liter)</option>
+        <option value="3.30" data-nama="Seaforce Active">Seaforce Active (3.30 m²/liter)</option>
+        <option value="7.53" data-nama="Alkyd High Gloss">Alkyd High Gloss (7.53 m²/liter)</option>
+        <option value="8.40" data-nama="Pilot II">Pilot II (8.40 m²/liter)</option>
+        <option value="5.60" data-nama="Jotamastic 80">Jotamastic 80 (5.60 m²/liter)</option>
+        <option value="6.10" data-nama="Jotafix PU Topcoat">Jotafix PU Topcoat (6.10 m²/liter)</option>
+        <option value="6.00" data-nama="Jotacote Universal N10">Jotacote Universal N10 (6.0 m²/liter)</option>
       </select>
-      <div id="hasilCat" style="margin-top:10px;"></div>
+
+      <label for="warnaCat">Pilih Warna:</label>
+      <select id="warnaCat">
+        <option disabled selected>-- Pilih warna --</option>
+        <option value="#D9DAD5">#D9DAD5 (Abu Abu Cerah)</option>
+        <option value="#8B0101">#8B0101 (Merah Tua)</option>
+        <option value="#FE3030">#FE3030 (Merah Terang)</option>
+        <option value="#060606">#060606 (Hitam)</option>
+        <option value="#0547B5">#0547B5 (Biru)</option>
+        <option value="#8B8D99">#8B8D99 (Abu Kebiruan)</option>
+      </select>
+      <div class="warna-label" id="labelWarna"></div>
+      <div id="previewWarna"></div>
+
+      <div id="hasilCat" style="margin-top:20px;"></div>
     </div>
   </main>
 
@@ -166,28 +173,39 @@
 
       document.getElementById("hasil").innerHTML = `
         <h3>Hasil Perhitungan Luasan</h3>
-        <p><strong>Luasan Bottom:</strong> ${luasanBottom.toFixed(2)} m²</p>
-        <p><strong>Luasan Bottop:</strong> ${luasanBottop.toFixed(2)} m²</p>
-        <p><strong>Luasan Top Side:</strong> ${luasanTopside.toFixed(2)} m²</p>
+        <p><strong>Bottom:</strong> ${luasanBottom.toFixed(2)} m²</p>
+        <p><strong>Bottop:</strong> ${luasanBottop.toFixed(2)} m²</p>
+        <p><strong>Top Side:</strong> ${luasanTopside.toFixed(2)} m²</p>
         <hr>
-        <p><strong>Total Luasan:</strong> ${total.toFixed(2)} m²</p>
+        <p><strong>Total:</strong> ${total.toFixed(2)} m²</p>
       `;
-
       document.getElementById("kebutuhan-cat").style.display = 'block';
       document.getElementById("hasilCat").innerHTML = "";
     }
 
+    document.getElementById("warnaCat").addEventListener("change", function () {
+      const warna = this.value;
+      document.getElementById("previewWarna").style.backgroundColor = warna;
+      document.getElementById("labelWarna").textContent = `Preview: ${warna}`;
+    });
+
+    document.getElementById("jenisCat").addEventListener("change", hitungKebutuhanCat);
+    document.getElementById("warnaCat").addEventListener("change", hitungKebutuhanCat);
+
     function hitungKebutuhanCat() {
       const sebar = parseFloat(document.getElementById("jenisCat").value);
+      const catSelect = document.getElementById("jenisCat");
+      const namaCat = catSelect.options[catSelect.selectedIndex]?.dataset.nama;
+
       if (!totalGlobal || isNaN(sebar)) return;
 
       const liter = totalGlobal / sebar;
-      const kaleng = Math.ceil(liter / 5); // misal 1 kaleng = 5 liter
+      const kaleng = Math.ceil(liter / 5); // diasumsikan 1 kaleng = 5 liter
 
       document.getElementById("hasilCat").innerHTML = `
         <p><strong>Kebutuhan Cat:</strong></p>
-        <p>- Total: ${liter.toFixed(2)} liter</p>
-        <p>- Jumlah Kaleng (5L): ${kaleng} kaleng</p>
+        <p>Total: ${liter.toFixed(2)} liter</p>
+        <p>Jumlah Kaleng (5L): ${kaleng} kaleng</p>
       `;
     }
   </script>
