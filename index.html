@@ -1,223 +1,285 @@
-<!-- FILE: index.html -->
 <!DOCTYPE html>
 <html lang="id">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Perhitungan Luasan & Cat Kapal</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 0;
-      padding: 20px;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kalkulasi Cat Kapal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
 
-    header {
-      background: #004d40;
-      color: white;
-      padding: 15px;
-      text-align: center;
-    }
+        header {
+            background: #004d40;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
 
-    main {
-      background: white;
-      max-width: 900px;
-      margin: 20px auto;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
+        main {
+            background: white;
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
 
-    label,
-    input,
-    select {
-      display: block;
-      width: 100%;
-      margin-top: 10px;
-    }
+        label,
+        select,
+        input,
+        button {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+        }
 
-    input[type="number"],
-    select {
-      padding: 5px;
-    }
+        input,
+        select {
+            padding: 8px;
+        }
 
-    button {
-      margin-top: 15px;
-      padding: 10px;
-      background: #004d40;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+        button {
+            margin-top: 20px;
+            padding: 10px;
+            background: #004d40;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-    button:hover {
-      background: #00332c;
-    }
+        button:hover {
+            background: #00332c;
+        }
 
-    .result,
-    .produk {
-      margin-top: 30px;
-    }
-
-    #previewWarna {
-      width: 80px;
-      height: 40px;
-      border: 1px solid #ccc;
-      margin-top: 10px;
-    }
-
-    .warna-label {
-      margin-top: 5px;
-      font-weight: bold;
-    }
-
-    @media(max-width: 600px) {
-      .produk-item {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-
-    img.ilustrasi {
-      width: 100%;
-      max-width: 100%;
-      margin: 20px 0;
-      border-radius: 5px;
-    }
-  </style>
+        .result {
+            margin-top: 30px;
+        }
+    </style>
 </head>
 
 <body>
-  <header>
-    <h1>Perhitungan Luasan & Kebutuhan Cat Kapal</h1>
-  </header>
+    <header>
+        <h1>Kalkulasi Cat Kapal</h1>
+    </header>
 
-  <main>
-    <h2>Ilustrasi Struktur Kapal</h2>
-    <img class="ilustrasi" src="Cuplikan layar 2025-06-17 152811.png" alt="Ilustrasi Kapal">
-    <h2>Input Parameter Kapal</h2>
-    <label for="d">Sarat Air (d) - meter</label>
-    <input type="number" id="d" value="4">
-    <label for="B">Lebar Kapal (B) - meter</label>
-    <input type="number" id="B" value="11">
-    <label for="Lpp">Panjang antara garis tegak (Lpp) - meter</label>
-    <input type="number" id="Lpp" value="50">
-    <label for="P">Coefficient Block (P)</label>
-    <input type="number" id="P" value="0.69" step="0.01">
-    <label for="h">Tinggi Bottop (h) - meter</label>
-    <input type="number" id="h" value="1.5">
-    <label for="H">Tinggi Top Side (H) - meter</label>
-    <input type="number" id="H" value="2">
-    <label for="Loa">Panjang Utama Kapal (Loa) - meter</label>
-    <input type="number" id="Loa" value="70">
-    <button onclick="hitung()">Hitung Luasan</button>
+    <main>
+        <label for="material">Pilih Material:</label>
+        <select id="material">
+            <option value="">-- Pilih Material --</option>
+            <option value="baja">Baja</option>
+            <option value="aluminium">Aluminium</option>
+        </select>
 
-    <div class="result" id="hasil"></div>
+        <label for="area">Area (Bagian Kapal):</label>
+        <select id="areaType"></select>
 
-    <div class="result" id="kebutuhan-cat" style="display:none;">
-      <h3>Perhitungan Kebutuhan Cat</h3>
+        <label for="lapisan">Jenis Lapisan:</label>
+        <select id="layerType"></select>
 
-      <label for="jenisCat">Pilih Produk Cat:</label>
-      <select id="jenisCat">
-        <option value="" disabled selected>-- Pilih Cat --</option>
-        <option value="4.97" data-nama="Jotaguard 630">Jotaguard 630 (4.97 m²/liter)</option>
-        <option value="5.79" data-nama="Safeguard Universal ES">Safeguard Universal ES (5.79 m²/liter)</option>
-        <option value="7.14" data-nama="Penguard Primer">Penguard Primer (7.14 m²/liter)</option>
-        <option value="3.85" data-nama="AF Max Guard">AF Max Guard (3.85 m²/liter)</option>
-        <option value="3.53" data-nama="Seaforce Shield">Seaforce Shield (3.53 m²/liter)</option>
-        <option value="3.30" data-nama="Seaforce Active">Seaforce Active (3.30 m²/liter)</option>
-        <option value="7.53" data-nama="Alkyd High Gloss">Alkyd High Gloss (7.53 m²/liter)</option>
-        <option value="8.40" data-nama="Pilot II">Pilot II (8.40 m²/liter)</option>
-        <option value="5.60" data-nama="Jotamastic 80">Jotamastic 80 (5.60 m²/liter)</option>
-        <option value="6.10" data-nama="Jotafix PU Topcoat">Jotafix PU Topcoat (6.10 m²/liter)</option>
-        <option value="6.00" data-nama="Jotacote Universal N10">Jotacote Universal N10 (6.0 m²/liter)</option>
-      </select>
+        <label for="produk">Produk Cat:</label>
+        <select id="produk"></select>
 
-      <label for="warnaCat">Pilih Warna:</label>
-      <select id="warnaCat">
-        <option disabled selected>-- Pilih warna --</option>
-        <option value="#D9DAD5">#D9DAD5 (Abu Abu Cerah)</option>
-        <option value="#8B8D99">#8B8D99 (Abu Kebiruan)</option>
-        <option value="#FFFFFF">#FFFFFF (Special White)</option>
-        <option value="#8B0000">#8B0000 (Dark Red)</option>
-        <option value="#FFA07A">#FFA07A (Light Red)</option>
-        <option value="#000000">#000000 (Black)</option>
-        <option value="#0000FF">#0000FF (Blue)</option>
-        <option value="#C0C0C0">#C0C0C0 (Aluminium)</option>
-        <option value="#B22222">#B22222 (Aluminium Red)</option>
-        <option value="#F0DC82">#F0DC82 (Buff)</option>
-        <option value="#808080">#808080 (Grey)</option>
-        <option value="#CD7F32">#CD7F32 (Bronze)</option>
-        <option value="#8E4585">#8E4585 (Plum)</option>
-        <option value="#006400">#006400 (Green)</option>
-        <option value="#FAF9F6">#FAF9F6 (Off White)</option>
-      </select>
-      <div class="warna-label" id="labelWarna"></div>
-      <div id="previewWarna"></div>
+        <label for="luas">Luas Permukaan (m²):</label>
+        <input type="number" id="luas" placeholder="Contoh: 250">
 
-      <div id="hasilCat" style="margin-top:20px;"></div>
-    </div>
-  </main>
+        <label for="roughness">Steel Roughness (µm):</label>
+        <input type="number" id="roughness" placeholder="Contoh: 50">
 
-  <script>
-    let totalGlobal = 0;
+        <label for="loss">Loss Factor (%):</label>
+        <input type="number" id="loss" placeholder="Contoh: 10">
 
-    function hitung() {
-      const d = parseFloat(document.getElementById("d").value);
-      const B = parseFloat(document.getElementById("B").value);
-      const Lpp = parseFloat(document.getElementById("Lpp").value);
-      const P = parseFloat(document.getElementById("P").value);
-      const h = parseFloat(document.getElementById("h").value);
-      const H = parseFloat(document.getElementById("H").value);
-      const Loa = parseFloat(document.getElementById("Loa").value);
+        <label for="kaleng">Ukuran Kaleng Cat:</label>
+        <select id="kaleng">
+            <option value="5">5 Liter</option>
+            <option value="20">20 Liter</option>
+        </select>
 
-      const luasanBottom = ((2 * d) + B) * Lpp * P;
-      const luasanBottop = 2 * h * (Lpp + 0.5 * B);
-      const luasanTopside = 2 * H * (Loa + 0.5 * B);
-      const total = luasanBottom + luasanBottop + luasanTopside;
-      totalGlobal = total;
+        <button onclick="hitungKebutuhanCat()">Hitung</button>
 
-      document.getElementById("hasil").innerHTML = `
-        <h3>Hasil Perhitungan Luasan</h3>
-        <p><strong>Bottom:</strong> ${luasanBottom.toFixed(2)} m²</p>
-        <p><strong>Bottop:</strong> ${luasanBottop.toFixed(2)} m²</p>
-        <p><strong>Top Side:</strong> ${luasanTopside.toFixed(2)} m²</p>
-        <hr>
-        <p><strong>Total:</strong> ${total.toFixed(2)} m²</p>
+        <div class="result" id="hasil"></div>
+    </main>
+
+    <script>
+        const dataCat = {
+            // Contoh entri: "baja_bottom_primer": [ { nama: "Jotaguard 630", DFT: 110, VS: 71, thinner: "Jotun Thinner No. 17" }, ... ]
+            "baja_bottom_shop primer": [
+                { nama: "Muki EPS", DFT: 25, VS: 25, thinner: "Jotun Thinner No. 17" },
+                { nama: "Muki Z 2001", DFT: 30, VS: 28, thinner: "Jotun Thinner No. 25" }
+            ],
+            "baja_bottom_primer": [
+                { nama: "Jotaguard 630", DFT: 110, VS: 71, thinner: "Jotun Thinner No. 17" },
+                { nama: "Penguard Primer", DFT: 50, VS: 51, thinner: "Jotun Thinner No. 17" },
+                { nama: "Jotacote Universal N10", DFT: 150, VS: 72, thinner: "Jotun Thinner No. 17" }
+            ],
+            "baja_bottom_anti corrosion": [
+                { nama: "Safeguard Universal ES", DFT: 155, VS: 62, thinner: "Jotun Thinner No. 17" }
+            ],
+            "baja_bottom_anti fouling": [
+                { nama: "SeaForce Active", DFT: 130, VS: 59, thinner: "Jotun Thinner No. 07" },
+                { nama: "AF Max Guard", DFT: 95, VS: 55, thinner: "Jotun Thinner No. 07" }
+            ],
+            "baja_topside_shop primer": [
+                { nama: "Muki EPS", DFT: 25, VS: 25, thinner: "Jotun Thinner No. 17" },
+                { nama: "Muki Z 2001", DFT: 30, VS: 28, thinner: "Jotun Thinner No. 25" }
+            ],
+            "baja_topside_primer": [
+                { nama: "Jotaguard 630", DFT: 110, VS: 71, thinner: "Jotun Thinner No. 17" },
+                { nama: "Penguard Primer", DFT: 50, VS: 51, thinner: "Jotun Thinner No. 17" },
+                { nama: "Jotacote Universal N10", DFT: 150, VS: 72, thinner: "Jotun Thinner No. 17" }
+            ],
+            "baja_topside_topcoat": [
+                { nama: "Pilot II", DFT: 25, VS: 48, thinner: "Jotun Thinner No. 02" },
+                { nama: "Jotafix PU Topcoat", DFT: 45, VS: 61, thinner: "Jotun Thinner No. 10 / 26" },
+                { nama: "Hardtop XP", DFT: 75, VS: 63, thinner: "Jotun Thinner No. 10" }
+            ],
+            "baja_deck, superstructure, bulwark_shop primer": [
+                { nama: "Muki EPS", DFT: 25, VS: 25, thinner: "Jotun Thinner No. 17" },
+                { nama: "Muki Z 2001", DFT: 30, VS: 28, thinner: "Jotun Thinner No. 25" }
+            ],
+            "baja_deck, superstructure, bulwark_primer": [
+                { nama: "Jotaguard 630", DFT: 110, VS: 71, thinner: "Jotun Thinner No. 17" },
+                { nama: "Penguard Primer", DFT: 50, VS: 51, thinner: "Jotun Thinner No. 17" },
+                { nama: "Jotacote Universal N10", DFT: 150, VS: 72, thinner: "Jotun Thinner No. 17" }
+            ],
+            "baja_deck, superstructure, bulwark_topcoat": [
+                { nama: "Pilot II", DFT: 25, VS: 48, thinner: "Jotun Thinner No. 02" },
+                { nama: "Jotafix PU Topcoat", DFT: 45, VS: 61, thinner: "Jotun Thinner No. 10 / 26" },
+                { nama: "Hardtop XP", DFT: 75, VS: 63, thinner: "Jotun Thinner No. 10" }
+            ],
+            "baja_fot_topcoat": [
+                { nama: "Tankguard HB Classic", DFT: 130, VS: 65, thinner: "Jotun Thinner No. 17 / 23" }
+            ],
+            "baja_fwt_topcoat": [
+                { nama: "Penguard HB", DFT: 135, VS: 54, thinner: "Jotun Thinner No. 17" }
+            ],
+            // Aluminium sama seperti baja
+            "aluminium_bottom_primer": [
+                { nama: "Jotaguard 630", DFT: 110, VS: 71, thinner: "Jotun Thinner No. 17" },
+                { nama: "Penguard Primer", DFT: 50, VS: 51, thinner: "Jotun Thinner No. 17" },
+                { nama: "Jotacote Universal N10", DFT: 150, VS: 72, thinner: "Jotun Thinner No. 17" }
+            ],
+            "aluminium_bottom_anti corrosion": [
+                { nama: "Safeguard Universal ES", DFT: 155, VS: 62, thinner: "Jotun Thinner No. 17" }
+            ],
+            "aluminium_bottom_anti fouling": [
+                { nama: "SeaForce Active", DFT: 130, VS: 59, thinner: "Jotun Thinner No. 07" },
+                { nama: "AF Max Guard", DFT: 95, VS: 55, thinner: "Jotun Thinner No. 07" }
+            ],
+            "aluminium_topside_primer": [
+                { nama: "Jotaguard 630", DFT: 110, VS: 71, thinner: "Jotun Thinner No. 17" },
+                { nama: "Penguard Primer", DFT: 50, VS: 51, thinner: "Jotun Thinner No. 17" },
+                { nama: "Jotacote Universal N10", DFT: 150, VS: 72, thinner: "Jotun Thinner No. 17" }
+            ],
+            "aluminium_topside_topcoat": [
+                { nama: "Pilot II", DFT: 25, VS: 48, thinner: "Jotun Thinner No. 02" },
+                { nama: "Jotafix PU Topcoat", DFT: 45, VS: 61, thinner: "Jotun Thinner No. 10 / 26" },
+                { nama: "Hardtop XP", DFT: 75, VS: 63, thinner: "Jotun Thinner No. 10" }
+            ],
+            "aluminium_deck, superstructure, bulwark_primer": [
+                { nama: "Jotaguard 630", DFT: 110, VS: 71, thinner: "Jotun Thinner No. 17" },
+                { nama: "Penguard Primer", DFT: 50, VS: 51, thinner: "Jotun Thinner No. 17" },
+                { nama: "Jotacote Universal N10", DFT: 150, VS: 72, thinner: "Jotun Thinner No. 17" }
+            ],
+            "aluminium_deck, superstructure, bulwark_topcoat": [
+                { nama: "Pilot II", DFT: 25, VS: 48, thinner: "Jotun Thinner No. 02" },
+                { nama: "Jotafix PU Topcoat", DFT: 45, VS: 61, thinner: "Jotun Thinner No. 10 / 26" },
+                { nama: "Hardtop XP", DFT: 75, VS: 63, thinner: "Jotun Thinner No. 10" }
+            ],
+            "aluminium_fot_topcoat": [
+                { nama: "Tankguard HB Classic", DFT: 130, VS: 65, thinner: "Jotun Thinner No. 17 / 23" }
+            ],
+            "aluminium_fwt_topcoat": [
+                { nama: "Penguard HB", DFT: 135, VS: 54, thinner: "Jotun Thinner No. 17" }
+            ]
+        };
+
+        const areaMap = {
+            baja: ["bottom", "topside", "deck, superstructure, bulwark", "fot", "fwt"],
+            aluminium: ["bottom", "topside", "deck, superstructure, bulwark", "fot", "fwt"]
+        };
+
+        const layerMap = {
+            bottom: ["shop primer", "primer", "anti corrosion", "anti fouling"],
+            topside: ["shop primer", "primer", "topcoat"],
+            "deck, superstructure, bulwark": ["shop primer", "primer", "topcoat"],
+            fot: ["topcoat"],
+            fwt: ["topcoat"]
+        };
+
+        document.getElementById("material").addEventListener("change", function () {
+            const areaSelect = document.getElementById("areaType");
+            areaSelect.innerHTML = "";
+            const selectedMaterial = this.value;
+            areaMap[selectedMaterial].forEach(area => {
+                const opt = document.createElement("option");
+                opt.value = area;
+                opt.textContent = area;
+                areaSelect.appendChild(opt);
+            });
+        });
+
+        document.getElementById("areaType").addEventListener("change", function () {
+            const layerSelect = document.getElementById("layerType");
+            layerSelect.innerHTML = "";
+            const selectedArea = this.value;
+            layerMap[selectedArea].forEach(layer => {
+                const opt = document.createElement("option");
+                opt.value = layer;
+                opt.textContent = layer;
+                layerSelect.appendChild(opt);
+            });
+        });
+
+        document.getElementById("layerType").addEventListener("change", function () {
+            const produkSelect = document.getElementById("produk");
+            produkSelect.innerHTML = "";
+            const material = document.getElementById("material").value;
+            const area = document.getElementById("areaType").value;
+            const layer = this.value;
+            const key = `${material}_${area}_${layer}`;
+            const produkList = dataCat[key] || [];
+            produkList.forEach(prod => {
+                const opt = document.createElement("option");
+                opt.value = JSON.stringify(prod);
+                opt.textContent = prod.nama;
+                produkSelect.appendChild(opt);
+            });
+        });
+
+        function hitungKebutuhanCat() {
+            const luas = parseFloat(document.getElementById("luas").value);
+            const rough = parseFloat(document.getElementById("roughness").value);
+            const loss = parseFloat(document.getElementById("loss").value);
+            const produk = JSON.parse(document.getElementById("produk").value);
+            const ukuranKaleng = parseFloat(document.getElementById("kaleng").value);
+
+            if (isNaN(luas) || isNaN(rough) || isNaN(loss)) {
+                alert("Mohon isi semua input dengan benar.");
+                return;
+            }
+
+            const { DFT, VS, thinner, nama } = produk;
+            const consumption = ((DFT + rough) * luas * (1 + (loss / 100))) / ((VS / 100) * 10000);
+            const jumlahKaleng = Math.ceil(consumption / ukuranKaleng);
+            const kebutuhanThinner = (consumption * 0.25).toFixed(2) + " - " + (consumption * 0.3).toFixed(2) + " liter";
+
+            document.getElementById("hasil").innerHTML = `
+        <h3>Hasil Kebutuhan</h3>
+        <p><strong>Produk:</strong> ${nama}</p>
+        <p><strong>DFT:</strong> ${DFT} μm</p>
+        <p><strong>Volume Solid:</strong> ${VS}%</p>
+        <p><strong>Kebutuhan Cat:</strong> ${consumption.toFixed(2)} liter</p>
+        <p><strong>Jumlah Kaleng (${ukuranKaleng}L):</strong> ${jumlahKaleng} kaleng</p>
+        <p><strong>Thinner:</strong> ${thinner} (${kebutuhanThinner})</p>
       `;
-      document.getElementById("kebutuhan-cat").style.display = 'block';
-      document.getElementById("hasilCat").innerHTML = "";
-    }
-
-    document.getElementById("warnaCat").addEventListener("change", function () {
-      const warna = this.value;
-      document.getElementById("previewWarna").style.backgroundColor = warna;
-      document.getElementById("labelWarna").textContent = `Preview: ${warna}`;
-    });
-
-    document.getElementById("jenisCat").addEventListener("change", hitungKebutuhanCat);
-    document.getElementById("warnaCat").addEventListener("change", hitungKebutuhanCat);
-
-    function hitungKebutuhanCat() {
-      const sebar = parseFloat(document.getElementById("jenisCat").value);
-      const catSelect = document.getElementById("jenisCat");
-      const namaCat = catSelect.options[catSelect.selectedIndex]?.dataset.nama;
-
-      if (!totalGlobal || isNaN(sebar)) return;
-
-      const liter = totalGlobal / sebar;
-      const kaleng = Math.ceil(liter / 5); // diasumsikan 1 kaleng = 5 liter
-
-      document.getElementById("hasilCat").innerHTML = `
-        <p><strong>Kebutuhan Cat:</strong></p>
-        <p>Total: ${liter.toFixed(2)} liter</p>
-        <p>Jumlah Kaleng (5L): ${kaleng} kaleng</p>
-      `;
-    }
-  </script>
+        }
+    </script>
 </body>
 
 </html>
