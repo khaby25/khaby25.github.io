@@ -281,7 +281,6 @@
                 alert("Mohon isi semua input dengan benar.");
                 return;
             }
-
             const { DFT, VS, thinner, nama } = produk;
             const consumption = ((DFT + rough) * luas * (1 + (loss / 100))) / ((VS / 100) * 10000);
             const jumlahKaleng = Math.ceil(consumption / ukuranKaleng);
