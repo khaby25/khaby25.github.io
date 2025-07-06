@@ -60,6 +60,20 @@
         .result {
             margin-top: 30px;
         }
+
+        img.ilustrasi {
+            width: 100%;
+            max-width: 100%;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        @media(max-width: 600px) {
+            .produk-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
     </style>
 </head>
 
@@ -69,6 +83,8 @@
     </header>
 
     <main>
+        <h2>Ilustrasi Struktur Kapal</h2>
+        <img class="ilustrasi" src="Cuplikan layar 2025-06-17 152811.png" alt="Ilustrasi Kapal">
         <label for="material">Pilih Material:</label>
         <select id="material">
             <option value="">-- Pilih Material --</option>
@@ -152,10 +168,10 @@
                 { nama: "Jotafix PU Topcoat", DFT: 45, VS: 61, thinner: "Jotun Thinner No. 10 / 26" },
                 { nama: "Hardtop XP", DFT: 75, VS: 63, thinner: "Jotun Thinner No. 10" }
             ],
-            "baja_fot_topcoat": [
+            "baja_fot_topcoat 2x": [
                 { nama: "Tankguard HB Classic", DFT: 130, VS: 65, thinner: "Jotun Thinner No. 17 / 23" }
             ],
-            "baja_fwt_topcoat": [
+            "baja_fwt_topcoat 2x": [
                 { nama: "Penguard HB", DFT: 135, VS: 54, thinner: "Jotun Thinner No. 17" }
             ],
             // Aluminium sama seperti baja
@@ -191,10 +207,10 @@
                 { nama: "Jotafix PU Topcoat", DFT: 45, VS: 61, thinner: "Jotun Thinner No. 10 / 26" },
                 { nama: "Hardtop XP", DFT: 75, VS: 63, thinner: "Jotun Thinner No. 10" }
             ],
-            "aluminium_fot_topcoat": [
+            "aluminium_fot_topcoat 2x": [
                 { nama: "Tankguard HB Classic", DFT: 130, VS: 65, thinner: "Jotun Thinner No. 17 / 23" }
             ],
-            "aluminium_fwt_topcoat": [
+            "aluminium_fwt_topcoat 2x": [
                 { nama: "Penguard HB", DFT: 135, VS: 54, thinner: "Jotun Thinner No. 17" }
             ]
         };
@@ -208,8 +224,8 @@
             bottom: ["shop primer", "primer", "anti corrosion", "anti fouling"],
             topside: ["shop primer", "primer", "topcoat"],
             "deck, superstructure, bulwark": ["shop primer", "primer", "topcoat"],
-            fot: ["topcoat"],
-            fwt: ["topcoat"]
+            fot: ["topcoat 2x"],
+            fwt: ["topcoat 2x"]
         };
 
         document.getElementById("material").addEventListener("change", function () {
@@ -234,6 +250,8 @@
                 opt.textContent = layer;
                 layerSelect.appendChild(opt);
             });
+            layerSelect.dispatchEvent(new Event('change'));
+
         });
 
         document.getElementById("layerType").addEventListener("change", function () {
