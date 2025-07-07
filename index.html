@@ -269,6 +269,38 @@
                 produkSelect.appendChild(opt);
             });
         });
+        function getDeadVolume(rough) {
+            // Tabel roughness vs dead volume dalam mm
+            const table = [
+                { rough: 30, dead: 0.020 },
+                { rough: 45, dead: 0.030 },
+                { rough: 60, dead: 0.040 },
+                { rough: 75, dead: 0.050 },
+                { rough: 90, dead: 0.060 },
+                { rough: 100, dead: 0.0685 },
+                { rough: 120, dead: 0.078 },
+                { rough: 150, dead: 0.090 }
+            ];
+
+            if (rough <= table[0].rough) return table[0].dead;
+            if (rough >= table[table.length - 1].rough) return table[table.length - 1].dead;
+
+            for (let i = 0; i < table.length - 1; i++) {
+                const r1 = table[i].rough;
+                const r2 = table[i + 1].rough;
+                const d1 = table[i].dead;
+                const d2 = table[i + 1].dead;
+
+                if (rough >= r1 && rough <= r2) {
+                    // Interpolasi linear
+                    const ratio = (rough - r1) / (r2 - r1);
+                    return d1 + ratio * (d2 - d1);
+                }
+            }
+        }
+
+
+
 
         function hitungKebutuhanCat() {
             const luas = parseFloat(document.getElementById("luas").value);
@@ -281,21 +313,27 @@
                 alert("Mohon isi semua input dengan benar.");
                 return;
             }
+
             const { DFT, VS, thinner, nama } = produk;
-            const consumption = ((DFT + rough) * luas * (1 + (loss / 100))) / ((VS / 100) * 10000);
-            const jumlahKaleng = Math.ceil(consumption / ukuranKaleng);
-            const kebutuhanThinner = (consumption * 0.25).toFixed(2) + " - " + (consumption * 0.3).toFixed(2) + " liter";
+
+            const deadVolume = getDeadVolume(rough); // sesuai tabel dead volume dari roughness
+            const consumption = (luas * (DFT + (deadVolume * 1000))) / (VS * 10); // dikali 1000 karena dead volume dalam mm
+            const totalConsumption = consumption * (1 + (loss / 100));
+            const jumlahKaleng = Math.ceil(totalConsumption / ukuranKaleng);
+            const kebutuhanThinner = (totalConsumption * 0.25).toFixed(2) + " - " + (totalConsumption * 0.3).toFixed(2) + " liter";
 
             document.getElementById("hasil").innerHTML = `
         <h3>Hasil Kebutuhan</h3>
         <p><strong>Produk:</strong> ${nama}</p>
         <p><strong>DFT:</strong> ${DFT} μm</p>
         <p><strong>Volume Solid:</strong> ${VS}%</p>
-        <p><strong>Kebutuhan Cat:</strong> ${consumption.toFixed(2)} liter</p>
+        <p><strong>Dead Volume:</strong> ${(deadVolume * 1000).toFixed(0)} μm</p>
+        <p><strong>Kebutuhan Cat:</strong> ${totalConsumption.toFixed(2)} liter</p>
         <p><strong>Jumlah Kaleng (${ukuranKaleng}L):</strong> ${jumlahKaleng} kaleng</p>
         <p><strong>Thinner:</strong> ${thinner} (${kebutuhanThinner})</p>
-      `;
+    `;
         }
+
     </script>
 </body>
 
